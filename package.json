@@ -1,0 +1,9 @@
+{
+  "name": "wa-roulette-tracker",
+  "version": "1.0.0",
+  "description": "Landing TikTok -> WhatsApp roulette dengan tracking klik (serverless, Vercel)",
+  "private": true,
+  "dependencies": {
+    "@upstash/redis": "^1.34.3"
+  }
+}
