@@ -13,7 +13,7 @@ const NUMBERS = [
 // Pesan otomatis yang sudah terisi di kolom chat WhatsApp.
 // Ubah teks ini sesuai kebutuhan. Bisa juga di-override per-iklan
 // dengan menambahkan parameter &text=... di URL landing.
-const DEFAULT_MESSAGE = "Halo, saya tertarik dan ingin tahu lebih lanjut.";
+const DEFAULT_MESSAGE = "Salam, saya ingin mengetahui dengan lebih lanjut mengenai koleksi kebaya Letter of Her. Mohon pencerahan, terima kasih.";
 
 export default async function handler(req, res) {
   try {
