@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex,nofollow" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     /* Palet minimalis: putih krem hangat */
@@ -35,7 +35,6 @@
     max-width:430px;
     margin:0 auto;
     background:var(--bg);
-    min-height:100vh;
     position:relative;
     overflow:hidden;
   }
@@ -53,22 +52,26 @@
   .hero{
     position:relative;
     width:100%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1 / 1;          /* lebih pendek dari 4:5 → konten naik */
+    max-height:54vh;              /* batasi tinggi di mobile supaya butang cepat kelihatan */
     overflow:hidden;
     background:#e6c8c0;
   }
   .hero img{
-    width:100%;height:100%;object-fit:cover;display:block;
+    width:100%;height:100%;
+    object-fit:cover;
+    object-position:center 20%;   /* angkat framing supaya tidak terpotong di bahagian penting */
+    display:block;
     animation:fade 1s ease both;
   }
   .hero::after{
     content:"";
-    position:absolute;left:0;right:0;bottom:-1px;height:72%;
+    position:absolute;left:0;right:0;bottom:-1px;height:78%;
     background:linear-gradient(to bottom,
       rgba(247,243,238,0) 0%,
-      rgba(247,243,238,.15) 22%,
-      rgba(247,243,238,.45) 48%,
-      rgba(247,243,238,.82) 75%,
+      rgba(247,243,238,.20) 24%,
+      rgba(247,243,238,.55) 50%,
+      rgba(247,243,238,.88) 76%,
       var(--bg) 100%);
     pointer-events:none;
   }
@@ -85,35 +88,39 @@
   }
   .handle{
     font-family:'Cormorant Garamond', serif;
-    font-weight:500;
-    font-size:32px;
-    letter-spacing:-.2px;
+    font-weight:700;
+    font-size:27px;
+    letter-spacing:-.3px;
     line-height:1.1;
     color:var(--ink);
   }
+  /* ===== PILL META (Verified + followers) ala contoh ===== */
   .meta{
-    margin-top:14px;
+    margin-top:16px;
     display:flex;align-items:center;justify-content:center;
-    gap:14px;
-    font-size:11.5px;
-    font-weight:400;
-    color:var(--muted);
-    letter-spacing:.4px;
+    gap:9px;
   }
-  .meta .dot{
-    width:3px;height:3px;border-radius:50%;background:var(--muted);
-    display:inline-block;
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.1px;
+    background:rgba(28,26,23,.05);
+    color:var(--ink);
+    border:1px solid rgba(28,26,23,.06);
   }
-  .meta .verified{
-    display:inline-flex;align-items:center;gap:5px;
-  }
-  .meta .verified svg{width:12px;height:12px}
+  .pill.verified{color:var(--ink)}
+  .pill.verified svg{width:15px;height:15px;flex:none}
+  .pill.followers{color:#6b645c;font-weight:500}
+  .pill.followers b{color:var(--ink);font-weight:600}
 
   /* ====== DIVIDER LABEL ====== */
   .divider{
     display:flex;align-items:center;gap:14px;
     padding:0 28px;
-    margin:42px 0 18px;
+    margin:48px 0 20px;
     animation:rise .55s ease both;
   }
   .divider .line{
@@ -201,8 +208,8 @@
   /* ====== FOOTER ====== */
   footer{
     text-align:center;
-    margin-top:44px;
-    padding:0 28px 44px;
+    margin-top:36px;
+    padding:0 28px 32px;
     color:var(--muted);
     font-size:10.5px;
     letter-spacing:1.2px;
@@ -233,15 +240,14 @@
     <div class="id">
       <div class="handle">@ivorystudiortw</div>
       <div class="meta">
-        <span class="verified">
+        <span class="pill verified">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.79 22.69a1.5 1.5 0 0 0-1.58 0l-.49.3a1.5 1.5 0 0 1-2.02-.43l-.33-.48a1.5 1.5 0 0 0-1.44-.64l-.57.08a1.5 1.5 0 0 1-1.67-1.22l-.1-.57a1.5 1.5 0 0 0-1.06-1.17l-.55-.16a1.5 1.5 0 0 1-1.04-1.79l.14-.56a1.5 1.5 0 0 0-.49-1.5l-.44-.37a1.5 1.5 0 0 1-.21-2.06l.35-.45a1.5 1.5 0 0 0 .16-1.57l-.25-.52a1.5 1.5 0 0 1 .64-1.97l.51-.27a1.5 1.5 0 0 0 .79-1.36l-.02-.58a1.5 1.5 0 0 1 1.39-1.54l.57-.04a1.5 1.5 0 0 0 1.27-.93l.22-.53a1.5 1.5 0 0 1 1.89-.84l.54.19a1.5 1.5 0 0 0 1.54-.32l.42-.4a1.5 1.5 0 0 1 2.07 0l.42.4c.41.39 1.01.51 1.54.32l.54-.19a1.5 1.5 0 0 1 1.89.84l.22.53a1.5 1.5 0 0 0 1.27.93l.57.04a1.5 1.5 0 0 1 1.39 1.54l-.02.58a1.5 1.5 0 0 0 .79 1.36l.51.27a1.5 1.5 0 0 1 .64 1.97l-.25.52a1.5 1.5 0 0 0 .16 1.57l.35.45a1.5 1.5 0 0 1-.21 2.06l-.44.37a1.5 1.5 0 0 0-.49 1.5l.14.56a1.5 1.5 0 0 1-1.04 1.79l-.55.16a1.5 1.5 0 0 0-1.06 1.17l-.1.57a1.5 1.5 0 0 1-1.67 1.22l-.57-.08a1.5 1.5 0 0 0-1.44.64l-.33.48a1.5 1.5 0 0 1-2.02.43z" fill="#1c1a17"/>
-            <path d="m7.6 11.34 3.18 3.18 6.37-6.36" stroke="#f7f3ee" stroke-width="3"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.79 22.69a1.5 1.5 0 0 0-1.58 0l-.49.3a1.5 1.5 0 0 1-2.02-.43l-.33-.48a1.5 1.5 0 0 0-1.44-.64l-.57.08a1.5 1.5 0 0 1-1.67-1.22l-.1-.57a1.5 1.5 0 0 0-1.06-1.17l-.55-.16a1.5 1.5 0 0 1-1.04-1.79l.14-.56a1.5 1.5 0 0 0-.49-1.5l-.44-.37a1.5 1.5 0 0 1-.21-2.06l.35-.45a1.5 1.5 0 0 0 .16-1.57l-.25-.52a1.5 1.5 0 0 1 .64-1.97l.51-.27a1.5 1.5 0 0 0 .79-1.36l-.02-.58a1.5 1.5 0 0 1 1.39-1.54l.57-.04a1.5 1.5 0 0 0 1.27-.93l.22-.53a1.5 1.5 0 0 1 1.89-.84l.54.19a1.5 1.5 0 0 0 1.54-.32l.42-.4a1.5 1.5 0 0 1 2.07 0l.42.4c.41.39 1.01.51 1.54.32l.54-.19a1.5 1.5 0 0 1 1.89.84l.22.53a1.5 1.5 0 0 0 1.27.93l.57.04a1.5 1.5 0 0 1 1.39 1.54l-.02.58a1.5 1.5 0 0 0 .79 1.36l.51.27a1.5 1.5 0 0 1 .64 1.97l-.25.52a1.5 1.5 0 0 0 .16 1.57l.35.45a1.5 1.5 0 0 1-.21 2.06l-.44.37a1.5 1.5 0 0 0-.49 1.5l.14.56a1.5 1.5 0 0 1-1.04 1.79l-.55.16a1.5 1.5 0 0 0-1.06 1.17l-.1.57a1.5 1.5 0 0 1-1.67 1.22l-.57-.08a1.5 1.5 0 0 0-1.44.64l-.33.48a1.5 1.5 0 0 1-2.02.43z" fill="#1d9bf0"/>
+            <path d="m7.6 11.34 3.18 3.18 6.37-6.36" stroke="#fff" stroke-width="3"/>
           </svg>
-          Disahkan
+          Verified
         </span>
-        <span class="dot"></span>
-        <span>2.3J pengikut</span>
+        <span class="pill followers"><b>2.3M</b>&nbsp;followers</span>
       </div>
     </div>
 
