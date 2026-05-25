@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Dashboard Tracking — WA Roulette</title>
+<title>Dashboard Tracking — TikTok ke WhatsApp</title>
 <meta name="robots" content="noindex,nofollow" />
 <style>
   :root{
@@ -89,7 +89,7 @@
 
     <div class="grid2">
       <div class="box">
-        <h2>📞 Klik per Nomor WhatsApp</h2>
+        <h2>📞 Tujuan WhatsApp</h2>
         <div id="byNumber"></div>
       </div>
       <div class="box">
@@ -220,8 +220,8 @@ function exportCSV(){
   });
   lines.push("");
 
-  lines.push("KLIK PER NOMOR");
-  lines.push("nomor,klik");
+  lines.push("TUJUAN WHATSAPP");
+  lines.push("nomor_tujuan,klik");
   Object.entries(d.clicksByNumber||{}).forEach(([k,v])=>lines.push(esc(k)+","+v));
   lines.push("");
 

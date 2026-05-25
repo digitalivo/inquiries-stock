@@ -1,7 +1,7 @@
 {
-  "name": "wa-roulette-tracker",
+  "name": "wa-single-whatsapp-tracker",
   "version": "1.0.0",
-  "description": "Landing TikTok -> WhatsApp roulette dengan tracking klik (serverless, Vercel)",
+  "description": "Landing TikTok -> satu nomor WhatsApp dengan tracking klik (serverless, Vercel)",
   "private": true,
   "type": "module",
   "dependencies": {

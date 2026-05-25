@@ -1,90 +1,86 @@
-# WA Roulette Tracker — TikTok → WhatsApp
+# WA Single Redirect Tracker — TikTok → WhatsApp
 
-Landing page + tracking klik dari iklan TikTok ke WhatsApp (2 nomor, sistem "roulette"
-round-robin agar pembagian merata), lengkap dengan dashboard statistik.
-Dibuat untuk Vercel (serverless) + Upstash Redis.
+Landing page + tracking klik dari iklan TikTok ke satu nomor WhatsApp, lengkap dengan dashboard statistik.
+Dibuat untuk Vercel serverless + Upstash Redis.
+
+## Nomor tujuan final
+
+Semua klik WhatsApp diarahkan ke:
+
+```txt
+https://api.whatsapp.com/send?phone=62811368348
+```
+
+Tidak ada roulette / round-robin lagi.
 
 ## Yang dilacak
-- **Visit**: setiap kali landing page dibuka dari TikTok (beserta `utm_source`, `utm_campaign`, `ttclid`).
-- **Klik WA**: setiap kali tombol "Chat via WhatsApp" diklik → dicatat lalu redirect ke `api.whatsapp.com`.
-- **Per nomor**: berapa klik masuk ke `62817103303` vs `6281296235758`.
-- **Per campaign / source**, **per hari**, **conversion rate** (klik ÷ visit),
-  dan **ttclid unik** (perkiraan klik unik dari TikTok).
+
+- **Visit**: setiap kali landing page dibuka dari TikTok, termasuk `utm_source`, `utm_campaign`, `utm_id`, `utm_medium`, dan `ttclid`.
+- **Klik WA**: setiap kali tombol WhatsApp diklik, lalu user diarahkan ke nomor tujuan.
+- **Per hari**, **per campaign/source**, **conversion rate** klik ÷ visit, dan **ttclid unik**.
 
 ## Struktur
-```
+
+```txt
 api/
-  _lib.js         koneksi Redis + util
-  track-visit.js  POST  → catat kunjungan
-  go.js           GET   → catat klik + roulette + redirect ke WA
-  stats.js        GET   → data untuk dashboard (diproteksi password)
+  _lib.js          koneksi Redis + util
+  track-visit.js   POST → catat kunjungan
+  go.js            GET  → catat klik + redirect ke WA 62811368348
+  stats.js         GET  → data dashboard, bisa diproteksi password
 public/
-  index.html      landing page (dibuka dari TikTok)
-  dashboard.html  dashboard statistik
-vercel.json       routing (/dashboard)
+  index.html       landing page
+  dashboard.html   dashboard statistik
+vercel.json        routing /dashboard
 ```
 
----
+## Environment Variables di Vercel
 
-## CARA DEPLOY (langkah demi langkah)
-
-### 1. Upload ke GitHub (atau pakai Vercel CLI)
-- Buat repo baru di GitHub, upload semua file folder ini.
-  (Atau dari komputer: `npm i -g vercel` lalu `vercel` di dalam folder ini.)
-
-### 2. Import ke Vercel
-- Buka https://vercel.com → **Add New → Project** → pilih repo Anda → **Deploy**.
-- Tunggu sampai dapat URL seperti `https://nama-proyek.vercel.app`.
-
-### 3. Tambah database Upstash Redis (gratis)
-- Di project Vercel → tab **Storage** → **Create Database** → pilih **Upstash → Redis**.
-- Ikuti wizard. Vercel otomatis menambahkan env var:
-  `KV_REST_API_URL` dan `KV_REST_API_TOKEN` ke project Anda.
-
-### 4. Set password dashboard
-- Project Vercel → **Settings → Environment Variables** → tambah:
-  - Name: `DASHBOARD_PASSWORD`  Value: (password pilihan Anda)
-  - (Kosongkan/ jangan set kalau ingin dashboard tanpa password.)
-
-### 5. Redeploy
-- Tab **Deployments** → titik tiga deployment terakhir → **Redeploy**
-  (wajib agar env var terbaca).
-
-Setelah ini selesai, project langsung jalan di domain Vercel
-(misalnya `https://nama-proyek.vercel.app`). Tidak perlu domain khusus.
-
----
-
-## URL yang dipakai
-
-Ganti `nama-proyek.vercel.app` dengan URL project Anda dari Vercel.
-
-**Landing (dipasang di iklan TikTok)** — pakai apa adanya, parameter random tetap jalan:
-```
-https://nama-proyek.vercel.app/?utm_source=tiktok&utm_id=__CAMPAIGN_ID__&utm_campaign=__CAMPAIGN_NAME__&utm_medium=paid&ttclid=...
+```txt
+DASHBOARD_PASSWORD=isi_password_dashboard
+WHATSAPP_PHONE=62811368348
+DEFAULT_WA_MESSAGE=Salam, saya ingin mengetahui dengan lebih lanjut mengenai koleksi kebaya Letter of Her. Mohon pencerahan, terima kasih.
 ```
 
-**Dashboard:**
+Setelah Upstash Redis/KV terhubung dari Vercel Marketplace, env berikut akan tersedia otomatis:
+
+```txt
+KV_REST_API_URL
+KV_REST_API_TOKEN
 ```
+
+Setup juga mendukung nama env langsung dari Upstash:
+
+```txt
+UPSTASH_REDIS_REST_URL
+UPSTASH_REDIS_REST_TOKEN
+```
+
+## URL TikTok Ads
+
+Ganti domain dengan domain Vercel atau custom domain Anda.
+
+```txt
+https://nama-proyek.vercel.app/?utm_source=tiktok&utm_id=__CAMPAIGN_ID__&utm_campaign=__CAMPAIGN_NAME__&utm_medium=paid&ttclid=__CLICK_ID__
+```
+
+Dashboard:
+
+```txt
 https://nama-proyek.vercel.app/dashboard
 ```
-(masukkan password bila di-set)
 
-## Pesan WhatsApp otomatis
-Saat user diarahkan ke WhatsApp, kolom chat sudah terisi pesan default:
-"Halo, saya tertarik dan ingin tahu lebih lanjut."
-- Ubah teks default di `api/go.js` (konstanta `DEFAULT_MESSAGE`).
-- Atau override per-iklan: tambahkan `&text=Pesan%20Anda` di URL landing TikTok.
+Jika `DASHBOARD_PASSWORD` diisi, dashboard akan meminta password.
 
-## Ekspor CSV
-Di dashboard ada tombol **⬇ Ekspor CSV** untuk mengunduh ringkasan
-(harian, per nomor, per campaign) — bisa dibuka di Excel/Google Sheets.
+## Deploy
 
-## Ganti / tambah nomor WhatsApp
-Edit array `NUMBERS` di `api/go.js`, lalu redeploy.
+```bash
+npm install
+vercel
+vercel --prod
+```
+
+Atau import repo ini langsung dari Vercel Dashboard.
 
 ## Catatan
-- Roulette default = round-robin di server (bergiliran 50/50). Kalau ingin acak,
-  ganti pemilihan index di `go.js` dengan `Math.floor(Math.random()*NUMBERS.length)`.
-- `ttclid` unik dihitung pakai Redis Set (akurat untuk volume normal).
-- Data tidak pernah hilang selama database Upstash aktif.
+
+Dashboard menghitung kunjungan landing dan klik tombol WhatsApp. Sistem ini belum bisa memastikan user benar-benar mengirim chat di WhatsApp. Untuk tracking chat terkirim, gunakan WhatsApp Business API, CRM, atau kode unik pada pesan.
